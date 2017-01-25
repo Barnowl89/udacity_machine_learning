@@ -8,6 +8,7 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import pylab as pl
 import numpy as np
+import datetime as dt
 from sklearn.metrics import accuracy_score
 
 # firt test based on sklearn website
@@ -91,7 +92,8 @@ def prettyPicture(clf, X_test, y_test):
     plt.xlabel("bumpiness")
     plt.ylabel("grade")
 
-    plt.savefig("test.png")
+    fname = "model_test_{}.png".format(dt.datetime.now().strftime("%Y%m%d_%H%M%S"))
+    plt.savefig(fname)
 
 
 ########################################################
@@ -118,7 +120,17 @@ def classify(features_train, labels_train, features_test, labels_test):
     ### return the fit classifier
 
     from sklearn.naive_bayes import GaussianNB
-    clf = GaussianNB()
+    from sklearn import svm
+    from sklearn import tree
+
+    # clf = GaussianNB()
+    # clf = svm.SVC(kernel='rbf', C=1.0)
+    clf = tree.DecisionTreeClassifier(min_samples_split=2)
+    # clf = svm.SVC(kernel='rbf', C=1000.0)
+
+    # features_train = features_train[:len(features_train) // 100]
+    # labels_train = labels_train[:len(labels_train) // 100]
+
 
     fit = clf.fit(features_train, labels_train)
     pred = clf.predict(features_test)
